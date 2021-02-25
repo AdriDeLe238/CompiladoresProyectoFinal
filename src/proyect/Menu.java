@@ -6,22 +6,36 @@
 package proyect;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author Adriana
  */
 public class Menu extends javax.swing.JFrame {
-
+    String ruta = "";
+    File f = null;
     /**
      * Creates new form Menu
      */
     public Menu() {
          initComponents();
+         setLocationRelativeTo(null);
        //setExtendedState(MAXIMIZED_BOTH);
        setVisible(true);
     }
+    
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,14 +46,14 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        codigoArea = new javax.swing.JPanel();
+        jLabelGuardado = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        codigoText = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        errorBtn = new javax.swing.JButton();
+        resBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jPanel4 = new javax.swing.JPanel();
@@ -51,99 +65,148 @@ public class Menu extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
+        archivoBtn = new javax.swing.JMenu();
+        abrirBtn = new javax.swing.JMenuItem();
+        guardarBtn = new javax.swing.JMenuItem();
+        Gcomobtn = new javax.swing.JMenuItem();
+        editarBtn = new javax.swing.JMenu();
+        formatoBtn = new javax.swing.JMenu();
+        compilarBtn = new javax.swing.JMenu();
+        ayudaBtn = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(153, 153, 255));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        codigoArea.setBackground(new java.awt.Color(204, 204, 255));
+        codigoArea.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Arial", 3, 24)); // NOI18N
-        jLabel1.setText("Código a Compilar: ");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 27, -1, -1));
+        jLabelGuardado.setFont(new java.awt.Font("Candara", 1, 14)); // NOI18N
+        jLabelGuardado.setForeground(new java.awt.Color(0, 153, 0));
+        codigoArea.add(jLabelGuardado, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, 250, -1));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jScrollPane1.setBackground(new java.awt.Color(229, 229, 255));
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 59, 450, 208));
+        codigoText.setBackground(new java.awt.Color(244, 244, 255));
+        codigoText.setColumns(20);
+        codigoText.setRows(5);
+        jScrollPane1.setViewportView(codigoText);
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 290));
+        codigoArea.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 59, 450, 208));
 
-        jPanel3.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel2.setFont(new java.awt.Font("Candara", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel2.setText("Código a Compilar: ");
+        codigoArea.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
-        jPanel2.setBackground(new java.awt.Color(153, 153, 255));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(codigoArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 290));
 
-        jButton1.setBackground(new java.awt.Color(204, 204, 255));
-        jButton1.setText("Resultados");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jPanel3.setBackground(new java.awt.Color(204, 204, 224));
+
+        errorBtn.setBackground(new java.awt.Color(153, 153, 255));
+        errorBtn.setFont(new java.awt.Font("Candara", 1, 12)); // NOI18N
+        errorBtn.setText("Errores");
+        errorBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        errorBtn.setMargin(new java.awt.Insets(2, 14, 0, 14));
+        errorBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                errorBtnActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, 106, 36));
 
-        jButton2.setBackground(new java.awt.Color(204, 204, 255));
-        jButton2.setText("Errores");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+        resBtn.setBackground(new java.awt.Color(153, 153, 255));
+        resBtn.setFont(new java.awt.Font("Candara", 1, 12)); // NOI18N
+        resBtn.setText("Resultados");
+        resBtn.setBorderPainted(false);
+        resBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        resBtn.setMargin(new java.awt.Insets(2, 14, 0, 14));
+        resBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                resBtnMouseEntered(evt);
             }
         });
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 106, 36));
+        resBtn.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                resBtnMouseDragged(evt);
+            }
+        });
+        resBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resBtnActionPerformed(evt);
+            }
+        });
 
+        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        jTextArea2.setEditable(false);
+        jTextArea2.setBackground(new java.awt.Color(244, 244, 255));
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
+        jTextArea2.setMargin(new java.awt.Insets(0, 2, 2, 2));
         jScrollPane2.setViewportView(jTextArea2);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 750, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 578, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 800, 180));
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 830, 170));
 
-        jPanel4.setBackground(new java.awt.Color(153, 153, 255));
+        jPanel4.setBackground(new java.awt.Color(204, 204, 255));
 
+        jPanel5.setBackground(new java.awt.Color(204, 204, 255));
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton3.setBackground(new java.awt.Color(204, 204, 255));
+        jButton3.setBackground(new java.awt.Color(0, 102, 102));
+        jButton3.setFont(new java.awt.Font("Candara", 0, 11)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Sintatico");
         jPanel5.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, -1, -1));
 
-        jButton4.setBackground(new java.awt.Color(204, 204, 255));
+        jButton4.setBackground(new java.awt.Color(0, 102, 102));
+        jButton4.setFont(new java.awt.Font("Candara", 0, 11)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Semantico");
         jPanel5.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, -1, -1));
 
-        jButton6.setBackground(new java.awt.Color(204, 204, 255));
+        jButton6.setBackground(new java.awt.Color(0, 102, 102));
+        jButton6.setFont(new java.awt.Font("Candara", 0, 11)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("Lexico");
         jPanel5.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jButton5.setBackground(new java.awt.Color(204, 204, 255));
+        jButton5.setBackground(new java.awt.Color(0, 102, 102));
+        jButton5.setFont(new java.awt.Font("Candara", 0, 11)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Codigo Intermedio");
-        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 130, -1));
+        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 110, -1));
 
+        jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane3.setAutoscrolls(true);
+
+        jTextArea3.setBackground(new java.awt.Color(244, 244, 255));
         jTextArea3.setColumns(20);
         jTextArea3.setRows(5);
         jScrollPane3.setViewportView(jTextArea3);
@@ -152,52 +215,185 @@ public class Menu extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 8, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addContainerGap(31, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 290));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 350, 290));
 
         jMenuBar1.setBackground(new java.awt.Color(204, 204, 255));
 
-        jMenu2.setText("Archivo");
-        jMenuBar1.add(jMenu2);
+        archivoBtn.setText("Archivo");
 
-        jMenu3.setText("Editar");
-        jMenuBar1.add(jMenu3);
+        abrirBtn.setText("Abrir");
+        abrirBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                abrirBtnMouseClicked(evt);
+            }
+        });
+        abrirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirBtnActionPerformed(evt);
+            }
+        });
+        archivoBtn.add(abrirBtn);
 
-        jMenu4.setText("Formato");
-        jMenuBar1.add(jMenu4);
+        guardarBtn.setText("Guardar");
+        guardarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarBtnActionPerformed(evt);
+            }
+        });
+        archivoBtn.add(guardarBtn);
 
-        jMenu5.setText("Compilar");
-        jMenuBar1.add(jMenu5);
+        Gcomobtn.setText("Guardar como...");
+        Gcomobtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GcomobtnActionPerformed(evt);
+            }
+        });
+        archivoBtn.add(Gcomobtn);
 
-        jMenu6.setText("Ayuda");
-        jMenuBar1.add(jMenu6);
+        jMenuBar1.add(archivoBtn);
+
+        editarBtn.setText("Editar");
+        jMenuBar1.add(editarBtn);
+
+        formatoBtn.setText("Formato");
+        jMenuBar1.add(formatoBtn);
+
+        compilarBtn.setText("Compilar");
+        jMenuBar1.add(compilarBtn);
+
+        ayudaBtn.setText("Ayuda");
+        jMenuBar1.add(ayudaBtn);
 
         setJMenuBar(jMenuBar1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void errorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_errorBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void resBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resBtnActionPerformed
+       
+    }//GEN-LAST:event_resBtnActionPerformed
+
+    private void resBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resBtnMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        
+    }//GEN-LAST:event_resBtnMouseEntered
+
+    private void abrirBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirBtnMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_abrirBtnMouseClicked
+
+    private void resBtnMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resBtnMouseDragged
+        // TODO add your handling code here:}
+        
+        
+    }//GEN-LAST:event_resBtnMouseDragged
+
+    private void abrirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirBtnActionPerformed
+        // TODO add your handling code here:
+       
+        //Elegir archivo
+        JFileChooser j = new JFileChooser();
+        j.showOpenDialog(j);
+        ruta = j.getSelectedFile().getAbsolutePath();
+        //System.out.print(ruta);
+        
+        f = new File(ruta);
+        Scanner entrada = null;
+        String contenido = "";
+        try {
+            entrada = new Scanner(f);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Mostrar en pantalla
+        while (entrada.hasNext()) { //mientras no se llegue al final del fichero
+                contenido = contenido + entrada.nextLine() + "\n";  //se lee una líne
+                
+         }
+        
+        codigoText.setText(contenido);
+ 
+    }//GEN-LAST:event_abrirBtnActionPerformed
+
+    private void GcomobtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GcomobtnActionPerformed
+        // TODO add your handling code here:
+        //GUARDAR COMO
+        try {
+            //String ruta = "/ruta/filename.txt";
+            JFileChooser j = new JFileChooser();
+            j.showOpenDialog(j);
+            ruta = j.getSelectedFile().getAbsolutePath() + ".txt";
+            
+            String contenido = codigoText.getText().toString();
+            f = new File(ruta);
+            // Si el archivo no existe es creado
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            FileWriter fw = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(contenido);
+            bw.close();
+            
+            jLabelGuardado.setText("Guardado");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_GcomobtnActionPerformed
+
+    private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
+        // TODO add your handling code here:
+        
+        //GUARDAR
+        if(f!=null){
+            System.out.println(f.getName());
+            FileWriter fw = null;
+            try {
+                fw = new FileWriter(f);
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            try {
+                bw.write(codigoText.getText().toString());
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                bw.close();
+                jLabelGuardado.setText("Guardado");
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_guardarBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,29 +431,32 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JMenuItem Gcomobtn;
+    private javax.swing.JMenuItem abrirBtn;
+    private javax.swing.JMenu archivoBtn;
+    private javax.swing.JMenu ayudaBtn;
+    private javax.swing.JPanel codigoArea;
+    private javax.swing.JTextArea codigoText;
+    private javax.swing.JMenu compilarBtn;
+    private javax.swing.JMenu editarBtn;
+    private javax.swing.JButton errorBtn;
+    private javax.swing.JMenu formatoBtn;
+    private javax.swing.JMenuItem guardarBtn;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelGuardado;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JButton resBtn;
     // End of variables declaration//GEN-END:variables
 }
