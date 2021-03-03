@@ -17,19 +17,25 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.undo.UndoManager;
 
 /**
  *
  * @author Adriana
  */
+
 public class Menu extends javax.swing.JFrame {
+    
     String ruta = "";
     File f = null;
+    UndoManager manager = new UndoManager();
     /**
      * Creates new form Menu
      */
     public Menu() {
+        manager = new UndoManager();
          initComponents();
+         codigoText.getDocument().addUndoableEditListener(manager);
          setLocationRelativeTo(null);
        //setExtendedState(MAXIMIZED_BOTH);
        setVisible(true);
@@ -70,7 +76,12 @@ public class Menu extends javax.swing.JFrame {
         abrirBtn = new javax.swing.JMenuItem();
         guardarBtn = new javax.swing.JMenuItem();
         Gcomobtn = new javax.swing.JMenuItem();
+        cerrar = new javax.swing.JCheckBoxMenuItem();
         editarBtn = new javax.swing.JMenu();
+        copiar = new javax.swing.JMenuItem();
+        Pegar = new javax.swing.JMenuItem();
+        Cortar = new javax.swing.JMenuItem();
+        Deshacer = new javax.swing.JMenuItem();
         formatoBtn = new javax.swing.JMenu();
         compilarBtn = new javax.swing.JMenu();
         ayudaBtn = new javax.swing.JMenu();
@@ -238,9 +249,51 @@ public class Menu extends javax.swing.JFrame {
         });
         archivoBtn.add(Gcomobtn);
 
+        cerrar.setSelected(true);
+        cerrar.setText("Cerrar");
+        cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarActionPerformed(evt);
+            }
+        });
+        archivoBtn.add(cerrar);
+
         jMenuBar1.add(archivoBtn);
 
         editarBtn.setText("Editar");
+
+        copiar.setText("Copiar");
+        copiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copiarActionPerformed(evt);
+            }
+        });
+        editarBtn.add(copiar);
+
+        Pegar.setText("Pegar");
+        Pegar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PegarActionPerformed(evt);
+            }
+        });
+        editarBtn.add(Pegar);
+
+        Cortar.setText("Cortar");
+        Cortar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CortarActionPerformed(evt);
+            }
+        });
+        editarBtn.add(Cortar);
+
+        Deshacer.setText("Deshacer");
+        Deshacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeshacerActionPerformed(evt);
+            }
+        });
+        editarBtn.add(Deshacer);
+
         jMenuBar1.add(editarBtn);
 
         formatoBtn.setText("Formato");
@@ -364,6 +417,31 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_guardarBtnActionPerformed
 
+    private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
+        // TODO add your handling code here:
+        codigoText.setText("");
+    }//GEN-LAST:event_cerrarActionPerformed
+
+    private void PegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PegarActionPerformed
+        // TODO add your handling code here:
+        codigoText.paste();
+    }//GEN-LAST:event_PegarActionPerformed
+
+    private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
+        // TODO add your handling code here:
+        codigoText.copy();
+    }//GEN-LAST:event_copiarActionPerformed
+
+    private void CortarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CortarActionPerformed
+        // TODO add your handling code here:
+        codigoText.cut();
+    }//GEN-LAST:event_CortarActionPerformed
+
+    private void DeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeshacerActionPerformed
+        // TODO add your handling code here:
+        manager.undo();
+    }//GEN-LAST:event_DeshacerActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -400,13 +478,18 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Cortar;
+    private javax.swing.JMenuItem Deshacer;
     private javax.swing.JMenuItem Gcomobtn;
+    private javax.swing.JMenuItem Pegar;
     private javax.swing.JMenuItem abrirBtn;
     private javax.swing.JMenu archivoBtn;
     private javax.swing.JMenu ayudaBtn;
+    private javax.swing.JCheckBoxMenuItem cerrar;
     private javax.swing.JPanel codigoArea;
     private javax.swing.JTextArea codigoText;
     private javax.swing.JMenu compilarBtn;
+    private javax.swing.JMenuItem copiar;
     private javax.swing.JMenu editarBtn;
     private javax.swing.JButton errorBtn;
     private javax.swing.JMenu formatoBtn;
