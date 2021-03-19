@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package proyect;
-
+import java.io.*;  
 import java.awt.CardLayout;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
@@ -17,6 +17,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import java.io.PrintWriter;
 
 /**
  *
@@ -49,7 +50,7 @@ public class Menu extends javax.swing.JFrame {
         codigoArea = new javax.swing.JPanel();
         jLabelGuardado = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        codigoText = new javax.swing.JTextArea();
+        txtEntrada = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -64,7 +65,8 @@ public class Menu extends javax.swing.JFrame {
         errorBtn = new javax.swing.JButton();
         resBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        txtResultado = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivoBtn = new javax.swing.JMenu();
         abrirBtn = new javax.swing.JMenuItem();
@@ -87,10 +89,10 @@ public class Menu extends javax.swing.JFrame {
 
         jScrollPane1.setBackground(new java.awt.Color(229, 229, 255));
 
-        codigoText.setBackground(new java.awt.Color(244, 244, 255));
-        codigoText.setColumns(20);
-        codigoText.setRows(5);
-        jScrollPane1.setViewportView(codigoText);
+        txtEntrada.setBackground(new java.awt.Color(244, 244, 255));
+        txtEntrada.setColumns(20);
+        txtEntrada.setRows(5);
+        jScrollPane1.setViewportView(txtEntrada);
 
         codigoArea.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 59, 450, 208));
 
@@ -170,12 +172,19 @@ public class Menu extends javax.swing.JFrame {
 
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setBackground(new java.awt.Color(244, 244, 255));
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jTextArea2.setMargin(new java.awt.Insets(0, 2, 2, 2));
-        jScrollPane2.setViewportView(jTextArea2);
+        txtResultado.setEditable(false);
+        txtResultado.setBackground(new java.awt.Color(244, 244, 255));
+        txtResultado.setColumns(20);
+        txtResultado.setRows(5);
+        txtResultado.setMargin(new java.awt.Insets(0, 2, 2, 2));
+        jScrollPane2.setViewportView(txtResultado);
+
+        jButton1.setText("RUN");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -188,16 +197,20 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -305,7 +318,7 @@ public class Menu extends javax.swing.JFrame {
                 
          }
         
-        codigoText.setText(contenido);
+        txtEntrada.setText(contenido);
  
     }//GEN-LAST:event_abrirBtnActionPerformed
 
@@ -318,7 +331,7 @@ public class Menu extends javax.swing.JFrame {
             j.showOpenDialog(j);
             ruta = j.getSelectedFile().getAbsolutePath() + ".txt";
             
-            String contenido = codigoText.getText().toString();
+            String contenido = txtEntrada.getText().toString();
             f = new File(ruta);
             // Si el archivo no existe es creado
             if (!f.exists()) {
@@ -351,7 +364,7 @@ public class Menu extends javax.swing.JFrame {
             BufferedWriter bw = new BufferedWriter(fw);
             
             try {
-                bw.write(codigoText.getText().toString());
+                bw.write(txtEntrada.getText().toString());
             } catch (IOException ex) {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -363,6 +376,51 @@ public class Menu extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_guardarBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        File archivo = new File("archivo.txt");
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(archivo);
+            escribir.print(txtEntrada.getText());
+            escribir.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            Reader lector = new BufferedReader(new FileReader("archivo.txt"));
+            Lexer lexer = new Lexer(lector);
+            String resultado ="";
+            while (true) {
+                Tokens tokens = lexer.yylex();
+                if(tokens == null){
+                    resultado += "FIN";
+                    txtResultado.setText(resultado);
+                    return;
+                }
+                switch(tokens){
+                    case ERROR:
+                        resultado += "Simbolo no definido\n";
+                        break;
+                    case Identificador: case Numero: case Reservadas:
+                        resultado += lexer.lexeme + ": Es un " + tokens + "\n";
+                        break;
+                    default:
+                        resultado += "Token: " + tokens + "\n";
+                        break;
+                        
+                }
+                
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -405,12 +463,12 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenu archivoBtn;
     private javax.swing.JMenu ayudaBtn;
     private javax.swing.JPanel codigoArea;
-    private javax.swing.JTextArea codigoText;
     private javax.swing.JMenu compilarBtn;
     private javax.swing.JMenu editarBtn;
     private javax.swing.JButton errorBtn;
     private javax.swing.JMenu formatoBtn;
     private javax.swing.JMenuItem guardarBtn;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelGuardado;
     private javax.swing.JMenuBar jMenuBar1;
@@ -423,10 +481,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
     private javax.swing.JButton resBtn;
+    private javax.swing.JTextArea txtEntrada;
+    private javax.swing.JTextArea txtResultado;
     // End of variables declaration//GEN-END:variables
 }
