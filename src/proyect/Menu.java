@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package proyect;
-
+import java.io.*;  
 import java.awt.CardLayout;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
@@ -17,29 +17,68 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.undo.UndoManager;
+import java.io.PrintWriter;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.Element;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 /**
  *
  * @author Adriana
  */
-
 public class Menu extends javax.swing.JFrame {
-    
     String ruta = "";
     File f = null;
-    UndoManager manager = new UndoManager();
     /**
      * Creates new form Menu
      */
     public Menu() {
-        manager = new UndoManager();
          initComponents();
-         codigoText.getDocument().addUndoableEditListener(manager);
          setLocationRelativeTo(null);
        //setExtendedState(MAXIMIZED_BOTH);
        setVisible(true);
+       configAreaText();
+       
     }
+    
+    public void configAreaText(){
+        SyncronizerClass synchronizer = new SyncronizerClass(txtEntrada);
+        scroll.setRowHeaderView(synchronizer);
+        
+        StyleContext styleContext = new StyleContext();
+        Style defaultStyle = styleContext.getStyle(StyleContext.DEFAULT_STYLE);
+        Style cwStyle = styleContext.addStyle("ConstantWidth", null);
+        Style commStyle = styleContext.addStyle("ConstantWidth", null);
+        Style numStyle = styleContext.addStyle("ConstantWidth", null);
+        Color col = new Color(155, 113, 252);
+        StyleConstants.setForeground(cwStyle, col);
+        col = new Color(0, 255, 191);
+        StyleConstants.setForeground(commStyle, col);
+        col = new Color(113, 157, 252);
+        StyleConstants.setForeground(numStyle, col);
+        StyleConstants.setBold(cwStyle, true);
+        
+        KeywordStyledDocument doc = new KeywordStyledDocument(defaultStyle, cwStyle, commStyle, numStyle);
+        txtEntrada.setDocument(doc);
+        txtEntrada.addCaretListener(new CaretListener() {
+            public void caretUpdate(CaretEvent ce) {
+                int pos = txtEntrada.getCaretPosition();
+                Element map = txtEntrada.getDocument().getDefaultRootElement();
+                int row = map.getElementIndex(pos);
+                Element lineElem = map.getElement(row);
+                int col = pos - lineElem.getStartOffset();
+                updateStatus(row + 1, col + 1);
+            }
+            
+            private void updateStatus(int linenumber, int columnnumber) {
+        status.setText("Linea: " + linenumber + " Columna: " + columnnumber);
+    }
+        });
+    }
+    
     
    
 
@@ -54,34 +93,31 @@ public class Menu extends javax.swing.JFrame {
 
         codigoArea = new javax.swing.JPanel();
         jLabelGuardado = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        codigoText = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        lexicoTxt = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTextArea5 = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTextArea6 = new javax.swing.JTextArea();
+        status = new javax.swing.JTextField();
+        scroll = new javax.swing.JScrollPane();
+        txtEntrada = new javax.swing.JTextPane();
         jPanel3 = new javax.swing.JPanel();
         errorBtn = new javax.swing.JButton();
         resBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        txtResultado = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivoBtn = new javax.swing.JMenu();
         abrirBtn = new javax.swing.JMenuItem();
         guardarBtn = new javax.swing.JMenuItem();
         Gcomobtn = new javax.swing.JMenuItem();
-        cerrar = new javax.swing.JCheckBoxMenuItem();
         editarBtn = new javax.swing.JMenu();
-        copiar = new javax.swing.JMenuItem();
-        Pegar = new javax.swing.JMenuItem();
-        Cortar = new javax.swing.JMenuItem();
-        Deshacer = new javax.swing.JMenuItem();
         formatoBtn = new javax.swing.JMenu();
         compilarBtn = new javax.swing.JMenu();
         ayudaBtn = new javax.swing.JMenu();
@@ -96,19 +132,10 @@ public class Menu extends javax.swing.JFrame {
         jLabelGuardado.setForeground(new java.awt.Color(0, 153, 0));
         codigoArea.add(jLabelGuardado, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, 250, -1));
 
-        jScrollPane1.setBackground(new java.awt.Color(229, 229, 255));
-
-        codigoText.setBackground(new java.awt.Color(244, 244, 255));
-        codigoText.setColumns(20);
-        codigoText.setRows(5);
-        jScrollPane1.setViewportView(codigoText);
-
-        codigoArea.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 59, 450, 208));
-
         jLabel2.setFont(new java.awt.Font("Candara", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 102));
         jLabel2.setText("Código a Compilar: ");
-        codigoArea.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+        codigoArea.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
         jTabbedPane1.setForeground(new java.awt.Color(255, 255, 255));
@@ -116,24 +143,28 @@ public class Menu extends javax.swing.JFrame {
 
         jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane4.setViewportView(jTextArea1);
+        lexicoTxt.setEditable(false);
+        lexicoTxt.setColumns(20);
+        lexicoTxt.setRows(5);
+        jScrollPane4.setViewportView(lexicoTxt);
 
         jTabbedPane1.addTab("Lexico", jScrollPane4);
 
+        jTextArea4.setEditable(false);
         jTextArea4.setColumns(20);
         jTextArea4.setRows(5);
         jScrollPane5.setViewportView(jTextArea4);
 
         jTabbedPane1.addTab("Sintactico", jScrollPane5);
 
+        jTextArea5.setEditable(false);
         jTextArea5.setColumns(20);
         jTextArea5.setRows(5);
         jScrollPane6.setViewportView(jTextArea5);
 
         jTabbedPane1.addTab("Semantico", jScrollPane6);
 
+        jTextArea6.setEditable(false);
         jTextArea6.setColumns(20);
         jTextArea6.setRows(5);
         jScrollPane7.setViewportView(jTextArea6);
@@ -141,6 +172,18 @@ public class Menu extends javax.swing.JFrame {
         jTabbedPane1.addTab("Codigo Intermedio", jScrollPane7);
 
         codigoArea.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 340, 250));
+
+        status.setEditable(false);
+        status.setBackground(new java.awt.Color(200, 200, 211));
+        status.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
+        status.setForeground(new java.awt.Color(0, 51, 51));
+        status.setText("Linea:    Columna:");
+        status.setBorder(null);
+        codigoArea.add(status, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 260, 150, -1));
+
+        scroll.setViewportView(txtEntrada);
+
+        codigoArea.add(scroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 440, 220));
 
         getContentPane().add(codigoArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 290));
 
@@ -181,12 +224,19 @@ public class Menu extends javax.swing.JFrame {
 
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setBackground(new java.awt.Color(244, 244, 255));
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jTextArea2.setMargin(new java.awt.Insets(0, 2, 2, 2));
-        jScrollPane2.setViewportView(jTextArea2);
+        txtResultado.setEditable(false);
+        txtResultado.setBackground(new java.awt.Color(244, 244, 255));
+        txtResultado.setColumns(20);
+        txtResultado.setRows(5);
+        txtResultado.setMargin(new java.awt.Insets(0, 2, 2, 2));
+        jScrollPane2.setViewportView(txtResultado);
+
+        jButton1.setText("RUN");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -195,23 +245,27 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 804, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(errorBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(resBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 830, 170));
@@ -249,51 +303,9 @@ public class Menu extends javax.swing.JFrame {
         });
         archivoBtn.add(Gcomobtn);
 
-        cerrar.setSelected(true);
-        cerrar.setText("Cerrar");
-        cerrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cerrarActionPerformed(evt);
-            }
-        });
-        archivoBtn.add(cerrar);
-
         jMenuBar1.add(archivoBtn);
 
         editarBtn.setText("Editar");
-
-        copiar.setText("Copiar");
-        copiar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                copiarActionPerformed(evt);
-            }
-        });
-        editarBtn.add(copiar);
-
-        Pegar.setText("Pegar");
-        Pegar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PegarActionPerformed(evt);
-            }
-        });
-        editarBtn.add(Pegar);
-
-        Cortar.setText("Cortar");
-        Cortar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CortarActionPerformed(evt);
-            }
-        });
-        editarBtn.add(Cortar);
-
-        Deshacer.setText("Deshacer");
-        Deshacer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeshacerActionPerformed(evt);
-            }
-        });
-        editarBtn.add(Deshacer);
-
         jMenuBar1.add(editarBtn);
 
         formatoBtn.setText("Formato");
@@ -358,7 +370,7 @@ public class Menu extends javax.swing.JFrame {
                 
          }
         
-        codigoText.setText(contenido);
+        txtEntrada.setText(contenido);
  
     }//GEN-LAST:event_abrirBtnActionPerformed
 
@@ -371,7 +383,7 @@ public class Menu extends javax.swing.JFrame {
             j.showOpenDialog(j);
             ruta = j.getSelectedFile().getAbsolutePath() + ".txt";
             
-            String contenido = codigoText.getText().toString();
+            String contenido = txtEntrada.getText().toString();
             f = new File(ruta);
             // Si el archivo no existe es creado
             if (!f.exists()) {
@@ -404,7 +416,7 @@ public class Menu extends javax.swing.JFrame {
             BufferedWriter bw = new BufferedWriter(fw);
             
             try {
-                bw.write(codigoText.getText().toString());
+                bw.write(txtEntrada.getText().toString());
             } catch (IOException ex) {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -417,30 +429,50 @@ public class Menu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_guardarBtnActionPerformed
 
-    private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        codigoText.setText("");
-    }//GEN-LAST:event_cerrarActionPerformed
-
-    private void PegarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PegarActionPerformed
-        // TODO add your handling code here:
-        codigoText.paste();
-    }//GEN-LAST:event_PegarActionPerformed
-
-    private void copiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copiarActionPerformed
-        // TODO add your handling code here:
-        codigoText.copy();
-    }//GEN-LAST:event_copiarActionPerformed
-
-    private void CortarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CortarActionPerformed
-        // TODO add your handling code here:
-        codigoText.cut();
-    }//GEN-LAST:event_CortarActionPerformed
-
-    private void DeshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeshacerActionPerformed
-        // TODO add your handling code here:
-        manager.undo();
-    }//GEN-LAST:event_DeshacerActionPerformed
+        File archivo = new File("archivo.txt");
+        PrintWriter escribir;
+        try {
+            escribir = new PrintWriter(archivo);
+            escribir.print(txtEntrada.getText());
+            escribir.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            Reader lector = new BufferedReader(new FileReader("archivo.txt"));
+            Lexer lexer = new Lexer(lector);
+            String resultado ="";
+            while (true) {
+                Tokens tokens = lexer.yylex();
+                if(tokens == null){
+                    resultado += "FIN";
+                    lexicoTxt.setText(resultado);
+                    return;
+                }
+                switch(tokens){
+                    case ERROR:
+                        resultado += "Simbolo no definido\n";
+                        break;
+                    case Identificador: case Numero: case Reservadas:
+                        resultado += lexer.lexeme + ": Es un " + tokens + "\n";
+                        break;
+                    default:
+                        resultado += "Token: " + tokens + "\n";
+                        break;
+                        
+                }
+                
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -478,38 +510,35 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Cortar;
-    private javax.swing.JMenuItem Deshacer;
     private javax.swing.JMenuItem Gcomobtn;
-    private javax.swing.JMenuItem Pegar;
     private javax.swing.JMenuItem abrirBtn;
     private javax.swing.JMenu archivoBtn;
     private javax.swing.JMenu ayudaBtn;
-    private javax.swing.JCheckBoxMenuItem cerrar;
     private javax.swing.JPanel codigoArea;
-    private javax.swing.JTextArea codigoText;
     private javax.swing.JMenu compilarBtn;
-    private javax.swing.JMenuItem copiar;
     private javax.swing.JMenu editarBtn;
     private javax.swing.JButton errorBtn;
     private javax.swing.JMenu formatoBtn;
     private javax.swing.JMenuItem guardarBtn;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelGuardado;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
+    private javax.swing.JTextArea lexicoTxt;
     private javax.swing.JButton resBtn;
+    private javax.swing.JScrollPane scroll;
+    private javax.swing.JTextField status;
+    private javax.swing.JTextPane txtEntrada;
+    private javax.swing.JTextArea txtResultado;
     // End of variables declaration//GEN-END:variables
 }
