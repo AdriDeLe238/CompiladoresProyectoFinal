@@ -8,6 +8,7 @@ import java.io.*;
 import java.awt.CardLayout;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
+import java.awt.HeadlessException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +62,7 @@ public class Menu extends javax.swing.JFrame {
         jTextArea5 = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTextArea6 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
         errorBtn = new javax.swing.JButton();
         resBtn = new javax.swing.JButton();
@@ -132,6 +134,7 @@ public class Menu extends javax.swing.JFrame {
         jTabbedPane1.addTab("Codigo Intermedio", jScrollPane7);
 
         codigoArea.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 20, 340, 250));
+        codigoArea.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 450, 200));
 
         getContentPane().add(codigoArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 290));
 
@@ -331,21 +334,20 @@ public class Menu extends javax.swing.JFrame {
             j.showOpenDialog(j);
             ruta = j.getSelectedFile().getAbsolutePath() + ".txt";
             
-            String contenido = txtEntrada.getText().toString();
+            String contenido = txtEntrada.getText();
             f = new File(ruta);
             // Si el archivo no existe es creado
             if (!f.exists()) {
                 f.createNewFile();
             }
             FileWriter fw = new FileWriter(f);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(contenido);
-            bw.close();
+            try (BufferedWriter bw = new BufferedWriter(fw)) {
+                bw.write(contenido);
+            }
             
             jLabelGuardado.setText("Guardado");
             
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (HeadlessException | IOException e) {
         }
     }//GEN-LAST:event_GcomobtnActionPerformed
 
@@ -364,7 +366,7 @@ public class Menu extends javax.swing.JFrame {
             BufferedWriter bw = new BufferedWriter(fw);
             
             try {
-                bw.write(txtEntrada.getText().toString());
+                bw.write(txtEntrada.getText());
             } catch (IOException ex) {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -404,7 +406,7 @@ public class Menu extends javax.swing.JFrame {
                     case ERROR:
                         resultado += "Simbolo no definido\n";
                         break;
-                    case Identificador: case Numero: case Reservadas:
+                    case Identificador: case Numero: case Reservadas: case Salto:
                         resultado += lexer.lexeme + ": Es un " + tokens + "\n";
                         break;
                     default:
@@ -451,6 +453,7 @@ public class Menu extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Menu().setVisible(true);
             }
@@ -475,6 +478,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
