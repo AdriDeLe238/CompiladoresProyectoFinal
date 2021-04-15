@@ -445,17 +445,19 @@ public class Menu extends javax.swing.JFrame {
             Reader lector = new BufferedReader(new FileReader("archivo.txt"));
             Lexer lexer = new Lexer(lector);
             String resultado ="";
+            String res2 = "";
             int l = 0; 
             while (true) {
                 Tokens tokens = lexer.yylex();
                 if(tokens == null){
                     resultado += "FIN";
                     lexicoTxt.setText(resultado);
+                    txtResultado.setText(res2);
                     return;
                 }
                 switch(tokens){
                     case ERROR:
-                        resultado +="Linea: "+l+" "+"Simbolo no definido\n";
+                        res2 +="Linea: "+l+" "+"Simbolo no definido\n";
                         break;
                     case Identificador: case Numero: case Reservadas:
                         resultado +="Linea: "+l+" "+ lexer.lexeme + ": Es un " + tokens + "\n";
