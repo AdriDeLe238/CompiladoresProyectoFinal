@@ -13,9 +13,16 @@ salto=[\n]+
 %}
 
 %%
+main |
 int |
+float |
+string |
 if |
 else |
+switch |
+case |
+break |
+do |
 while {lexeme=yytext(); return Reservadas;}
 {espacio} {/*Ignore*/}
 {salto} {return Salto;}

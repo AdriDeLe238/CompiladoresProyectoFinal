@@ -1,2 +1,2 @@
-int c = hola ()
-;;
+scs
+3

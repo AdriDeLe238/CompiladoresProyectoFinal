@@ -231,12 +231,11 @@ public class KeywordStyledDocument extends DefaultStyledDocument {
                 || word.equals("while")
                 || word.equals("float")
                 || word.equals("string")
-                || word.equals("cin")
-                || word.equals("cout")
-                || word.equals("real")
+                || word.equals("switch")
                 || word.equals("int")
                 || word.equals("break")
                 || word.equals("end")
+                || word.equals("case")
                 || word.equals("boolean"));
     }
 }

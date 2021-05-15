@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.Element;
@@ -32,6 +33,9 @@ import javax.swing.text.StyleContext;
 public class Menu extends javax.swing.JFrame {
     String ruta = "";
     File f = null;
+    ArrayList<Token> listaSintactico = new ArrayList<Token>();
+    static ArbolGramatical arbolG = new ArbolGramatical();
+   
     /**
      * Creates new form Menu
      */
@@ -78,8 +82,6 @@ public class Menu extends javax.swing.JFrame {
     }
         });
     }
-    
-    
    
 
     /**
@@ -432,6 +434,7 @@ public class Menu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         File archivo = new File("archivo.txt");
+        
         PrintWriter escribir;
         try {
             escribir = new PrintWriter(archivo);
@@ -446,8 +449,14 @@ public class Menu extends javax.swing.JFrame {
             Lexer lexer = new Lexer(lector);
             String resultado ="";
             String res2 = "";
+            
+           
+            
+            
+           
             int l = 0; 
             while (true) {
+                
                 Tokens tokens = lexer.yylex();
                 if(tokens == null){
                     resultado += "FIN";
@@ -469,9 +478,15 @@ public class Menu extends javax.swing.JFrame {
                         break;
                         
                 }
-                
+                Token elemento = new Token(l,lexer.lexeme,tokens.toString());
+                listaSintactico.add(elemento); 
+        arbolG.imprimir(arbolG.raiz);
             }
-        } catch (FileNotFoundException ex) {
+            
+            
+           
+        } 
+        catch (FileNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
