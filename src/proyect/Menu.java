@@ -19,12 +19,14 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.Element;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.undo.UndoManager;
 
 /**
  *
@@ -33,8 +35,6 @@ import javax.swing.text.StyleContext;
 public class Menu extends javax.swing.JFrame {
     String ruta = "";
     File f = null;
-    ArrayList<Token> listaSintactico = new ArrayList<Token>();
-    static ArbolGramatical arbolG = new ArbolGramatical();
    
     /**
      * Creates new form Menu
@@ -119,7 +119,12 @@ public class Menu extends javax.swing.JFrame {
         abrirBtn = new javax.swing.JMenuItem();
         guardarBtn = new javax.swing.JMenuItem();
         Gcomobtn = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         editarBtn = new javax.swing.JMenu();
+        copy = new javax.swing.JMenuItem();
+        paste = new javax.swing.JMenuItem();
+        cut = new javax.swing.JMenuItem();
+        deshacer = new javax.swing.JMenuItem();
         formatoBtn = new javax.swing.JMenu();
         compilarBtn = new javax.swing.JMenu();
         ayudaBtn = new javax.swing.JMenu();
@@ -185,7 +190,7 @@ public class Menu extends javax.swing.JFrame {
 
         scroll.setViewportView(txtEntrada);
 
-        codigoArea.add(scroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 440, 220));
+        codigoArea.add(scroll, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 450, 220));
 
         getContentPane().add(codigoArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 290));
 
@@ -305,9 +310,55 @@ public class Menu extends javax.swing.JFrame {
         });
         archivoBtn.add(Gcomobtn);
 
+        jMenuItem1.setText("Cerrar");
+        archivoBtn.add(jMenuItem1);
+
         jMenuBar1.add(archivoBtn);
 
         editarBtn.setText("Editar");
+        editarBtn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                editarBtnKeyPressed(evt);
+            }
+        });
+
+        copy.setText("Copiar");
+        copy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyActionPerformed(evt);
+            }
+        });
+        copy.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                copyKeyPressed(evt);
+            }
+        });
+        editarBtn.add(copy);
+
+        paste.setText("Pegar");
+        paste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasteActionPerformed(evt);
+            }
+        });
+        editarBtn.add(paste);
+
+        cut.setText("Cortar");
+        cut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cutActionPerformed(evt);
+            }
+        });
+        editarBtn.add(cut);
+
+        deshacer.setText("Deshacer");
+        deshacer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deshacerActionPerformed(evt);
+            }
+        });
+        editarBtn.add(deshacer);
+
         jMenuBar1.add(editarBtn);
 
         formatoBtn.setText("Formato");
@@ -433,9 +484,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        File archivo = new File("archivo.txt");
-        
+        File archivo = new File("archivo.txt");        
         PrintWriter escribir;
+        List<Token> TAll = new ArrayList<Token>();
         try {
             escribir = new PrintWriter(archivo);
             escribir.print(txtEntrada.getText());
@@ -449,42 +500,35 @@ public class Menu extends javax.swing.JFrame {
             Lexer lexer = new Lexer(lector);
             String resultado ="";
             String res2 = "";
-            
-           
-            
-            
-           
-            int l = 0; 
+            int l = 1; 
             while (true) {
-                
                 Tokens tokens = lexer.yylex();
                 if(tokens == null){
                     resultado += "FIN";
                     lexicoTxt.setText(resultado);
                     txtResultado.setText(res2);
+                    AnalizadorSintactico Ansin = new AnalizadorSintactico(TAll,0);
+                    Ansin.parse();
                     return;
                 }
                 switch(tokens){
                     case ERROR:
                         res2 +="Linea: "+l+" "+"Simbolo no definido\n";
+                        
                         break;
-                    case Identificador: case Numero: case Reservadas:
+                    case Identificador: case Numero: case Reservadas: 
                         resultado +="Linea: "+l+" "+ lexer.lexeme + ": Es un " + tokens + "\n";
+                        Token t = new Token(l,tokens, lexer.lexeme); 
+                        TAll.add(t);
                         break;
                     case Salto: 
                         l = l +1; 
                     default:
                         resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        break;
-                        
+                        break;       
                 }
-                Token elemento = new Token(l,lexer.lexeme,tokens.toString());
-                listaSintactico.add(elemento); 
-        arbolG.imprimir(arbolG.raiz);
             }
             
-            
-           
         } 
         catch (FileNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
@@ -493,6 +537,37 @@ public class Menu extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteActionPerformed
+        // TODO add your handling code here:
+        txtEntrada.paste();
+    }//GEN-LAST:event_pasteActionPerformed
+
+    private void editarBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editarBtnKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_editarBtnKeyPressed
+
+    private void copyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_copyKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_copyKeyPressed
+
+    private void copyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyActionPerformed
+        // TODO add your handling code here:
+        txtEntrada.copy();
+    }//GEN-LAST:event_copyActionPerformed
+
+    private void cutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutActionPerformed
+        // TODO add your handling code here:
+         txtEntrada.cut();
+    }//GEN-LAST:event_cutActionPerformed
+
+    private void deshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deshacerActionPerformed
+        // TODO add your handling code here:
+        UndoManager um = new UndoManager();
+        txtEntrada.getDocument().addUndoableEditListener(um);
+        um.undo();
+    }//GEN-LAST:event_deshacerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -536,6 +611,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenu ayudaBtn;
     private javax.swing.JPanel codigoArea;
     private javax.swing.JMenu compilarBtn;
+    private javax.swing.JMenuItem copy;
+    private javax.swing.JMenuItem cut;
+    private javax.swing.JMenuItem deshacer;
     private javax.swing.JMenu editarBtn;
     private javax.swing.JButton errorBtn;
     private javax.swing.JMenu formatoBtn;
@@ -544,6 +622,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelGuardado;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
@@ -555,6 +634,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextArea jTextArea6;
     private javax.swing.JTextArea lexicoTxt;
+    private javax.swing.JMenuItem paste;
     private javax.swing.JButton resBtn;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JTextField status;

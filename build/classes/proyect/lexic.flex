@@ -13,8 +13,16 @@ salto=[\n]+
 %}
 
 %%
-main |
+program |
 int |
+fi |
+until |
+read |
+write |
+bool |
+not |
+and |
+or |
 float |
 string |
 if |
@@ -32,6 +40,12 @@ while {lexeme=yytext(); return Reservadas;}
 "-" {return Resta;}
 "*" {return Multiplicacion;}
 "/" {return Division;}
+"==" {return igualigual;}
+";" {return puntoycoma;}
+"(" {return abreparentesis;}
+")" {return cierraparentesis;}
+"{" {return abrellave;}
+"}" {return cierrallave;}
 
 {L}({L}|{D})* {lexeme=yytext(); return Identificador;}
 ("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}

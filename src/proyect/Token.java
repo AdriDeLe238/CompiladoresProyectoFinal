@@ -11,17 +11,17 @@ package proyect;
  */
 public class Token {
     int lineaToken;
-    String Token;
+    Tokens Token;
     String tipoToken;
     
 
-    Token(int l, String t, String tipo){
+    Token(int l, Tokens t, String tipo){
         this.lineaToken = l;
         this.Token = t;
         this.tipoToken = tipo;
     }
     
-    public void imprimir(){
+  /*  public void imprimir(){
         System.out.println(this.lineaToken + " " + this.Token + " " +this.tipoToken);
     }
     
@@ -33,5 +33,5 @@ public class Token {
     }
     public int getLinea(){
         return this.lineaToken;
-    }
+    }*/
 }

@@ -7,7 +7,7 @@ package proyect;
 
 /**
  *
- * @author Ezequiel
+ * @author Adriana
  */
 import java.util.ArrayList;
 import java.util.List;
@@ -223,7 +223,15 @@ public class KeywordStyledDocument extends DefaultStyledDocument {
     }
 
     private static final boolean isReservedWord(String word) {
-        return (word.equals("main")
+        return (word.equals("program")
+                || word.equals("fi")
+                || word.equals("until")
+                || word.equals("read")
+                || word.equals("write")
+                || word.equals("bool")
+                || word.equals("or")
+                || word.equals("and")
+                || word.equals("not")
                 || word.equals("if")
                 || word.equals("for")
                 || word.equals("else")

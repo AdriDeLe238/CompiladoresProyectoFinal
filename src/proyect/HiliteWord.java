@@ -7,7 +7,7 @@ package proyect;
 
 /**
  *
- * @author Ezequiel
+ * @author Adriana
  */
 public class HiliteWord {
     int _position;  

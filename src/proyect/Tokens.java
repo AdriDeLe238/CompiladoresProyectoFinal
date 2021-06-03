@@ -19,5 +19,9 @@ public enum Tokens {
     Identificador,
     Numero,
     Salto,
-    ERROR
+    ERROR,
+    igualigual,
+    puntoycoma,
+    abreparentesis,
+    cierraparentesis
 }
