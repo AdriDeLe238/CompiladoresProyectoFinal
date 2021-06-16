@@ -23,5 +23,7 @@ public enum Tokens {
     igualigual,
     puntoycoma,
     abreparentesis,
-    cierraparentesis
+    cierraparentesis,
+    abrellave,
+    cierrallave
 }

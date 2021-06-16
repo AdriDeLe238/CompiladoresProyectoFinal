@@ -22,22 +22,21 @@ public class AnalizadorSintactico {
     }
     
     public void match(String expected){
-      System.out.println("Si entre al match");
+     // System.out.println("Si entre al match");
       List<Token> to = this.TAll;
-      System.out.println(expected);
-      System.out.println(to.get(i).tipoToken);
+      //System.out.println(expected);
+      //System.out.println(to.get(i).tipoToken);
       System.out.println("i fuera del if"+this.i);
-        if(expected.equals(to.get(i).tipoToken)){
+      System.out.println("tamaño de la lista"+to.size()); 
+         if(this.i < to.size() && expected.equals(to.get(i).tipoToken)){
             this.i++; 
             System.out.println("i dentro del if "+this.i);
-
         }else{
             syntaxError("Hubo un error en la sintaxis");
         }
     }
     
     public Nodo parse(){
-              System.out.println("Si entre al parse");
         Nodo n = new Nodo();
         n = program();
         /*if ( .val != "FIN"){
@@ -47,23 +46,27 @@ public class AnalizadorSintactico {
     }
     
     public Nodo program(){
-        System.out.println("Si entre al program");
-        Nodo temp = new Nodo();
+        //System.out.println("Si entre al program");
+        Nodo n = new Nodo();
         match("program");
         match("{");
-        return temp; 
+        n = SecSentencias(this.TAll.get(this.i));
+        match("}");
+        return n; 
     }
     
-    public Nodo SecSentencias(Nodo nodo){
+    public Nodo SecSentencias(Token t){
         Nodo n = new Nodo();
-        n = Statement(nodo);
-        return nodo; 
+        n = Statement(t);
+        return n; 
     }
     
-    public Nodo Statement(Nodo nodo){
+    public Nodo Statement(Token t){
+        System.out.println("si entre al statement");
         Nodo n = new Nodo(); 
-        switch(nodo.val){
-            case "if": System.out.print("si entro al IF"); break; 
+        System.out.println("t.token"+t.tipoToken);
+        switch(t.tipoToken){
+            case "if": System.out.println("si entro al IF"); break; 
             case "while": System.out.println("si entro al WHILE"); break; 
             case "do": System.out.println("si entro al DO"); break; 
             case "read": System.out.println("si entro al READ"); break; 
@@ -112,9 +115,25 @@ public class AnalizadorSintactico {
         return null;
     }
     
-    public Nodo factor(){
-    //aqui entra si es factor
+    public Nodo b_expresion(Token t){
         return null;
+    }
+    
+    public Nodo factor(Token t){
+        //gramatica: factor → ”(” b-expresión ”)” | numero | identificador 
+        Nodo n = new Nodo();
+        switch(t.Token){
+            
+            case Numero: break; 
+            
+            case Identificador: break;
+            
+            default: 
+              match("(");
+              n = b_expresion(t); 
+              match(")");
+        }
+        return n;
     }
     
     

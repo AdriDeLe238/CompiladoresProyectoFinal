@@ -516,13 +516,34 @@ public class Menu extends javax.swing.JFrame {
                         res2 +="Linea: "+l+" "+"Simbolo no definido\n";
                         
                         break;
-                    case Identificador: case Numero: case Reservadas: 
+                    case Identificador: case Numero: case Reservadas:
                         resultado +="Linea: "+l+" "+ lexer.lexeme + ": Es un " + tokens + "\n";
                         Token t = new Token(l,tokens, lexer.lexeme); 
                         TAll.add(t);
                         break;
                     case Salto: 
-                        l = l +1; 
+                        l = l +1;
+                        break;
+                    case abrellave:  
+                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
+                        Token t2 = new Token(l,tokens, "{"); 
+                        TAll.add(t2);
+                        break; 
+                    case cierrallave: 
+                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
+                        Token t3 = new Token(l,tokens, "}"); 
+                        TAll.add(t3);
+                         break;
+                    case abreparentesis: 
+                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
+                        Token t4 = new Token(l,tokens, "("); 
+                        TAll.add(t4);
+                        break;
+                    case cierraparentesis:
+                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
+                        Token t5 = new Token(l,tokens, ")"); 
+                        TAll.add(t5);
+                        break; 
                     default:
                         resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
                         break;       
