@@ -21,6 +21,7 @@ public enum Tokens {
     Salto,
     ERROR,
     igualigual,
+    menorigual,
     puntoycoma,
     abreparentesis,
     cierraparentesis,

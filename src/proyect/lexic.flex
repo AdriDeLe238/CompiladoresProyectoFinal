@@ -41,6 +41,7 @@ while {lexeme=yytext(); return Reservadas;}
 "*" {return Multiplicacion;}
 "/" {return Division;}
 "==" {return igualigual;}
+"<=" {return menorigual;}
 ";" {return puntoycoma;}
 "(" {return abreparentesis;}
 ")" {return cierraparentesis;}
