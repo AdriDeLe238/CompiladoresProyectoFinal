@@ -484,6 +484,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        txtResultado.setText(""); 
         File archivo = new File("archivo.txt");        
         PrintWriter escribir;
         List<Token> TAll = new ArrayList<Token>();
@@ -508,7 +509,9 @@ public class Menu extends javax.swing.JFrame {
                     lexicoTxt.setText(resultado);
                     txtResultado.setText(res2);
                     AnalizadorSintactico Ansin = new AnalizadorSintactico(TAll,0);
-                    Ansin.parse();
+                    Nodo n = new Nodo(); 
+                    n = Ansin.program();
+                    txtResultado.setText(Ansin.error);
                     return;
                 }
                 switch(tokens){
@@ -544,6 +547,16 @@ public class Menu extends javax.swing.JFrame {
                         Token t5 = new Token(l,tokens, ")"); 
                         TAll.add(t5);
                         break; 
+                    case puntoycoma:
+                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
+                        Token t6 = new Token(l,tokens, ";"); 
+                        TAll.add(t6);
+                        break;
+                    case coma:
+                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
+                        Token t7 = new Token(l,tokens, ","); 
+                        TAll.add(t7);
+                        break;
                     default:
                         resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
                         break;       

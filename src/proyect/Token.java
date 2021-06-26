@@ -16,22 +16,22 @@ public class Token {
     
 
     Token(int l, Tokens t, String tipo){
-        this.lineaToken = l;
-        this.Token = t;
-        this.tipoToken = tipo;
+        this.lineaToken = l; //linea del token
+        this.Token = t; //tipo del token reservada etc 
+        this.tipoToken = tipo; //valor del token
     }
     
   /*  public void imprimir(){
         System.out.println(this.lineaToken + " " + this.Token + " " +this.tipoToken);
-    }
+    }*/
     
     public String getTipoToken(){
         return this.tipoToken;
     }
     public String getToken(){
-        return this.Token;
+        return this.Token.toString();
     }
     public int getLinea(){
         return this.lineaToken;
-    }*/
+    }
 }

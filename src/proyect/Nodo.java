@@ -15,29 +15,18 @@ public class Nodo {
     Nodo hermanos; //hermano
     int linea; //linea en el que esta el token
     String val; //valor del token ? 
-    //String name; //lexema ?
     
-    Nodo(){
-             this.hijos = new Nodo[3]; 
+    Nodo( Token t ){
+        this.hijos = new Nodo[3];
+        this.hermanos = null; 
+        this.val = t.tipoToken; 
+        this.linea = t.lineaToken; 
     }
 
-     Nodo(Nodo [] hijos, Nodo hermano, int line, String val){
-         this.hijos = hijos; 
-         this.hermanos = hermano; 
-         this.linea = line;
-         this.val = val;
-         //this.name = name; 
+     Nodo(){ 
+        this.hijos = new Nodo[3];
+        this.hermanos = null; 
+        this.val = null; 
+        this.linea = 0;
      }
 }
-
-/*typedef struct treeNode
-   { struct treeNode * child[MAXCHILDREN];
-     struct treeNode * sibling;
-     int lineno;
-     NodeKind nodekind;
-     union { StmtKind stmt; ExpKind exp;} kind;
-     union { TokenType op;
-             int val;
-             char * name; } attr;
-     ExpType type; /* for type checking of exps */
- /*  } TreeNode;*/

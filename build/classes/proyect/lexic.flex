@@ -31,6 +31,8 @@ switch |
 case |
 break |
 do |
+then |
+fi |
 while {lexeme=yytext(); return Reservadas;}
 {espacio} {/*Ignore*/}
 {salto} {return Salto;}
@@ -42,11 +44,21 @@ while {lexeme=yytext(); return Reservadas;}
 "/" {return Division;}
 "==" {return igualigual;}
 "<=" {return menorigual;}
+">=" {return mayorigual;}
+"<" {return menor;}
+">" {return mayor;}
+"!=" {return diferenteigual;}
 ";" {return puntoycoma;}
+"," {return coma;}
 "(" {return abreparentesis;}
 ")" {return cierraparentesis;}
 "{" {return abrellave;}
 "}" {return cierrallave;}
+"true" {return truel;}
+"false" {return falsel;}
+"NOT" {return not;}
+"AND" {return and;}
+"OR" {return or;}
 
 {L}({L}|{D})* {lexeme=yytext(); return Identificador;}
 ("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}

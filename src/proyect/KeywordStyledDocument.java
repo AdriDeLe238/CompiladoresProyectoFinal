@@ -244,6 +244,14 @@ public class KeywordStyledDocument extends DefaultStyledDocument {
                 || word.equals("break")
                 || word.equals("end")
                 || word.equals("case")
-                || word.equals("boolean"));
+                || word.equals("true")
+                || word.equals("false")
+                || word.equals("boolean")
+                || word.equals("then")
+                || word.equals("fi")
+                || word.equals("OR")
+                || word.equals("AND")
+                || word.equals("NOT"));
+
     }
 }

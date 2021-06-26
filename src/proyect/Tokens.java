@@ -22,9 +22,19 @@ public enum Tokens {
     ERROR,
     igualigual,
     menorigual,
+    mayorigual,
+    menor,
+    mayor,
+    diferenteigual,
     puntoycoma,
+    coma,
     abreparentesis,
     cierraparentesis,
     abrellave,
-    cierrallave
+    cierrallave,
+    truel,
+    falsel,
+    not, 
+    and, 
+    or
 }
