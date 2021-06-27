@@ -1,6 +1,7 @@
 program {
-int x;
-y=4;
+int x, y;
+x=0; // comentario 1
+y=4; /* comentario 2 */
 do {
 if(x<y) {
 y=y-1;

@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package proyect;
-import java.io.*;  
+
+import java.io.*;
 import java.awt.CardLayout;
 import java.awt.Color;
 import static java.awt.Frame.MAXIMIZED_BOTH;
@@ -33,25 +34,26 @@ import javax.swing.undo.UndoManager;
  * @author Adriana
  */
 public class Menu extends javax.swing.JFrame {
+
     String ruta = "";
     File f = null;
-   
+
     /**
      * Creates new form Menu
      */
     public Menu() {
-         initComponents();
-         setLocationRelativeTo(null);
-       //setExtendedState(MAXIMIZED_BOTH);
-       setVisible(true);
-       configAreaText();
-       
+        initComponents();
+        setLocationRelativeTo(null);
+        //setExtendedState(MAXIMIZED_BOTH);
+        setVisible(true);
+        configAreaText();
+
     }
-    
-    public void configAreaText(){
+
+    public void configAreaText() {
         SyncronizerClass synchronizer = new SyncronizerClass(txtEntrada);
         scroll.setRowHeaderView(synchronizer);
-        
+
         StyleContext styleContext = new StyleContext();
         Style defaultStyle = styleContext.getStyle(StyleContext.DEFAULT_STYLE);
         Style cwStyle = styleContext.addStyle("ConstantWidth", null);
@@ -64,7 +66,7 @@ public class Menu extends javax.swing.JFrame {
         col = new Color(113, 157, 252);
         StyleConstants.setForeground(numStyle, col);
         StyleConstants.setBold(cwStyle, true);
-        
+
         KeywordStyledDocument doc = new KeywordStyledDocument(defaultStyle, cwStyle, commStyle, numStyle);
         txtEntrada.setDocument(doc);
         txtEntrada.addCaretListener(new CaretListener() {
@@ -76,14 +78,40 @@ public class Menu extends javax.swing.JFrame {
                 int col = pos - lineElem.getStartOffset();
                 updateStatus(row + 1, col + 1);
             }
-            
+
             private void updateStatus(int linenumber, int columnnumber) {
-        status.setText("Linea: " + linenumber + " Columna: " + columnnumber);
-    }
+                status.setText("Linea: " + linenumber + " Columna: " + columnnumber);
+            }
         });
     }
-   
 
+    
+public void imprimrArbol(Nodo n) {
+        System.out.println(n.val);
+/*
+        for (int i = 0; i < n.hijos.length; i++) {
+            if (n.hijos[i] != null) {
+                System.out.println("--" + n.hijos[i].val);
+            }
+
+            if (n.hijos[i].hijos.length > 0) {
+                for (int j = 0; j < n.hijos[i].hijos.length; j++) {
+                    if (n.hijos[i].hijos[j] != null) {
+                        System.out.println("----" + n.hijos[i].hijos[j].val);
+                        if (n.hijos[i].hijos[j].hijos.length > 0) {
+                        for (int k = 0; k < n.hijos[i].hijos.length; k++) {
+                            if (n.hijos[i].hijos[j].hijos[k] != null) {
+                                System.out.println("------" + n.hijos[i].hijos[j].hijos[k].val);
+                            }
+                        }
+                    }
+                    }
+                    
+                }
+            }
+
+        }*/
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -380,34 +408,36 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_errorBtnActionPerformed
 
     private void resBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resBtnActionPerformed
-       
+
     }//GEN-LAST:event_resBtnActionPerformed
 
     private void resBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resBtnMouseEntered
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_resBtnMouseEntered
 
     private void abrirBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abrirBtnMouseClicked
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_abrirBtnMouseClicked
 
     private void resBtnMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resBtnMouseDragged
         // TODO add your handling code here:}
-        
-        
+
+
     }//GEN-LAST:event_resBtnMouseDragged
 
+    
+    
     private void abrirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirBtnActionPerformed
         // TODO add your handling code here:
-       
+
         //Elegir archivo
         JFileChooser j = new JFileChooser();
         j.showOpenDialog(j);
         ruta = j.getSelectedFile().getAbsolutePath();
         //System.out.print(ruta);
-        
+
         f = new File(ruta);
         Scanner entrada = null;
         String contenido = "";
@@ -416,15 +446,15 @@ public class Menu extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //Mostrar en pantalla
         while (entrada.hasNext()) { //mientras no se llegue al final del fichero
-                contenido = contenido + entrada.nextLine() + "\n";  //se lee una líne
-                
-         }
-        
+            contenido = contenido + entrada.nextLine() + "\n";  //se lee una líne
+
+        }
+
         txtEntrada.setText(contenido);
- 
+
     }//GEN-LAST:event_abrirBtnActionPerformed
 
     private void GcomobtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GcomobtnActionPerformed
@@ -435,7 +465,7 @@ public class Menu extends javax.swing.JFrame {
             JFileChooser j = new JFileChooser();
             j.showOpenDialog(j);
             ruta = j.getSelectedFile().getAbsolutePath() + ".txt";
-            
+
             String contenido = txtEntrada.getText().toString();
             f = new File(ruta);
             // Si el archivo no existe es creado
@@ -446,9 +476,9 @@ public class Menu extends javax.swing.JFrame {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(contenido);
             bw.close();
-            
+
             jLabelGuardado.setText("Guardado");
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -456,9 +486,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
         // TODO add your handling code here:
-        
+
         //GUARDAR
-        if(f!=null){
+        if (f != null) {
             System.out.println(f.getName());
             FileWriter fw = null;
             try {
@@ -467,7 +497,7 @@ public class Menu extends javax.swing.JFrame {
                 Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
             }
             BufferedWriter bw = new BufferedWriter(fw);
-            
+
             try {
                 bw.write(txtEntrada.getText().toString());
             } catch (IOException ex) {
@@ -484,8 +514,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        txtResultado.setText(""); 
-        File archivo = new File("archivo.txt");        
+        txtResultado.setText("");
+        File archivo = new File("archivo.txt");
         PrintWriter escribir;
         List<Token> TAll = new ArrayList<Token>();
         try {
@@ -495,81 +525,163 @@ public class Menu extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try {
             Reader lector = new BufferedReader(new FileReader("archivo.txt"));
             Lexer lexer = new Lexer(lector);
-            String resultado ="";
+            String resultado = "";
             String res2 = "";
-            int l = 1; 
+            int l = 1;
             while (true) {
                 Tokens tokens = lexer.yylex();
-                if(tokens == null){
+                if (tokens == null) {
                     resultado += "FIN";
                     lexicoTxt.setText(resultado);
                     txtResultado.setText(res2);
-                    AnalizadorSintactico Ansin = new AnalizadorSintactico(TAll,0);
-                    Nodo n = new Nodo(); 
+                    AnalizadorSintactico Ansin = new AnalizadorSintactico(TAll, 0);
+                    Nodo n = new Nodo();
                     n = Ansin.program();
+                    imprimrArbol(n);
                     txtResultado.setText(Ansin.error);
                     return;
                 }
-                switch(tokens){
+                switch (tokens) {
                     case ERROR:
-                        res2 +="Linea: "+l+" "+"Simbolo no definido\n";
-                        
+                        res2 += "Linea: " + l + " " + "Simbolo no definido\n";
+
                         break;
-                    case Identificador: case Numero: case Reservadas:
-                        resultado +="Linea: "+l+" "+ lexer.lexeme + ": Es un " + tokens + "\n";
-                        Token t = new Token(l,tokens, lexer.lexeme); 
+                    case Identificador:
+                    case Numero:
+                    case Reservadas:
+                        resultado += "Linea: " + l + " " + lexer.lexeme + ": Es un " + tokens + "\n";
+                        Token t = new Token(l, tokens, lexer.lexeme);
                         TAll.add(t);
                         break;
-                    case Salto: 
-                        l = l +1;
+                    case Salto:
+                        l = l + 1;
                         break;
-                    case abrellave:  
-                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        Token t2 = new Token(l,tokens, "{"); 
+                    case abrellave:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t2 = new Token(l, tokens, "{");
                         TAll.add(t2);
-                        break; 
-                    case cierrallave: 
-                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        Token t3 = new Token(l,tokens, "}"); 
+                        break;
+                    case cierrallave:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t3 = new Token(l, tokens, "}");
                         TAll.add(t3);
-                         break;
-                    case abreparentesis: 
-                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        Token t4 = new Token(l,tokens, "("); 
+                        break;
+                    case abreparentesis:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t4 = new Token(l, tokens, "(");
                         TAll.add(t4);
                         break;
                     case cierraparentesis:
-                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        Token t5 = new Token(l,tokens, ")"); 
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t5 = new Token(l, tokens, ")");
                         TAll.add(t5);
-                        break; 
+                        break;
                     case puntoycoma:
-                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        Token t6 = new Token(l,tokens, ";"); 
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t6 = new Token(l, tokens, ";");
                         TAll.add(t6);
                         break;
                     case coma:
-                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        Token t7 = new Token(l,tokens, ","); 
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t7 = new Token(l, tokens, ",");
                         TAll.add(t7);
                         break;
+                     case Igual:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t8 = new Token(l, tokens, "=");
+                        TAll.add(t8);
+                        break;
+                    case mayorigual:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t9 = new Token(l, tokens, ">=");
+                        TAll.add(t9);
+                        break;
+                    case menorigual:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t10 = new Token(l, tokens, "<=");
+                        TAll.add(t10);
+                        break;
+                    case igualigual:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t11 = new Token(l, tokens, "==");
+                        TAll.add(t11);
+                        break;
+                    case diferenteigual:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t12 = new Token(l, tokens, "==");
+                        TAll.add(t12);
+                        break;
+                    case mayor:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t13 = new Token(l, tokens, ">");
+                        TAll.add(t13);
+                        break;
+                    case menor:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t14 = new Token(l, tokens, "<");
+                        TAll.add(t14);
+                        break;
+                     case Suma:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t15 = new Token(l, tokens, "+");
+                        TAll.add(t15);
+                        break;
+                     case Resta:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t16 = new Token(l, tokens, "-");
+                        TAll.add(t16);
+                        break;
+                      case Multiplicacion:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t17 = new Token(l, tokens, "*");
+                        TAll.add(t17);
+                        break;
+                      case Division:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t18 = new Token(l, tokens, "/");
+                        TAll.add(t18);
+                        break;
+                      case truel:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t19 = new Token(l, tokens, "true");
+                        TAll.add(t19);
+                        break;
+                      case falsel:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t20 = new Token(l, tokens, "false");
+                        TAll.add(t20);
+                        break;
+                      case or:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t21 = new Token(l, tokens, "OR");
+                        TAll.add(t21);
+                        break;
+                      case and:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t22 = new Token(l, tokens, "AND");
+                        TAll.add(t22);
+                        break;
+                      case not:
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        Token t23 = new Token(l, tokens, "NOT");
+                        TAll.add(t23);
+                        break;
                     default:
-                        resultado +="Linea: "+l+" "+"Token: " + tokens + "\n";
-                        break;       
+                        resultado += "Linea: " + l + " " + "Token: " + tokens + "\n";
+                        break;
                 }
             }
-            
-        } 
-        catch (FileNotFoundException ex) {
+
+        } catch (FileNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void pasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasteActionPerformed
@@ -579,7 +691,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void editarBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editarBtnKeyPressed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_editarBtnKeyPressed
 
     private void copyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_copyKeyPressed
@@ -593,7 +705,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void cutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutActionPerformed
         // TODO add your handling code here:
-         txtEntrada.cut();
+        txtEntrada.cut();
     }//GEN-LAST:event_cutActionPerformed
 
     private void deshacerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deshacerActionPerformed

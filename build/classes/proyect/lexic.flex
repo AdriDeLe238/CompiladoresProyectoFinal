@@ -34,9 +34,9 @@ do |
 then |
 fi |
 while {lexeme=yytext(); return Reservadas;}
-{espacio} {/*Ignore*/}
 {salto} {return Salto;}
 "//".* {/*Ignore*/}
+"/*".* {/*Ignore*/}
 "=" {return Igual;}
 "+" {return Suma;}
 "-" {return Resta;}
@@ -49,7 +49,6 @@ while {lexeme=yytext(); return Reservadas;}
 ">" {return mayor;}
 "!=" {return diferenteigual;}
 ";" {return puntoycoma;}
-"," {return coma;}
 "(" {return abreparentesis;}
 ")" {return cierraparentesis;}
 "{" {return abrellave;}
@@ -59,6 +58,7 @@ while {lexeme=yytext(); return Reservadas;}
 "NOT" {return not;}
 "AND" {return and;}
 "OR" {return or;}
+"," {return coma;}
 
 {L}({L}|{D})* {lexeme=yytext(); return Identificador;}
 ("(-"{D}+")")|{D}+ {lexeme=yytext(); return Numero;}
